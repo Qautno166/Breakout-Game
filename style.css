@@ -1,0 +1,19 @@
+.grid {
+  position: absolute;
+  border: solid black 1px;
+  width: 560px;
+  height: 300px;
+}
+
+.block {
+  position: absolute;
+  width: 100px;
+  height: 20px;
+  background-color: aqua;
+}
+.user {
+  position: absolute;
+  width: 100px;
+  height: 20px;
+  background-color: rgb(255, 1, 1);
+}
