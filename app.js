@@ -3,8 +3,16 @@
 const grid = document.querySelector(".grid");
 const blockWidth = 100;
 const bolckHeight = 20;
+const ballDiam = 20;
+const boardWidth = 560;
+const boardHight = 300;
 const userStart = [230, 10];
+const ballStart = [100, 100];
+let xDirection = -2;
+let yDirection = 2;
 let currentPossition = userStart;
+let currentBallPossition = ballStart;
+let timerID;
 
 //create block
 class Block {
@@ -44,31 +52,118 @@ function addBlocks() {
     grid.appendChild(block);
   }
 }
+
 addBlocks();
 
 //add user
 
 const user = document.createElement("div");
 user.classList.add("user");
-user.style.left = currentPossition[0] + "px";
-user.style.bottom = currentPossition[1] + "px";
-userMovemnt();
+drawUser();
 grid.appendChild(user);
+
+//draw the user
+
+function drawUser() {
+  user.style.left = currentPossition[0] + "px";
+  user.style.bottom = currentPossition[1] + "px";
+}
+function drawBall() {
+  ball.style.left = currentBallPossition[0] + "px";
+  ball.style.bottom = currentBallPossition[1] + "px";
+}
 
 //movement of user
 
-function userMovemnt() {
-  if (user.style.left === "0px") {
-    user.style.left === "100px";
+function moveUser(e) {
+  console.log(currentPossition);
+  switch (e.key) {
+    case "ArrowLeft":
+      if (currentPossition[0] > 0) {
+        currentPossition[0] = currentPossition[0] - 10;
+        drawUser();
+      }
+      break;
+  }
+
+  switch (e.key) {
+    case "ArrowRight":
+      if (currentPossition[0] < 460) {
+        currentPossition[0] = currentPossition[0] + 10;
+        drawUser();
+      }
+      break;
   }
 }
 
-window.addEventListener("keydown", (event) => {
-  if (event.defaultPrevented) {
+document.addEventListener("keydown", moveUser);
+
+//creating ball
+
+const ball = document.createElement("div");
+ball.classList.add("ball");
+grid.appendChild(ball);
+drawBall();
+// Position of ball
+
+function movingBall() {
+  currentBallPossition[0] += xDirection;
+  currentBallPossition[1] += yDirection;
+  collisionCheck();
+  drawBall();
+
+  console.log(xDirection);
+  console.log(yDirection);
+
+  console.log(`y = ${currentBallPossition[1]}`);
+  console.log(`x = ${currentBallPossition[0]}`);
+}
+timerID = setInterval(movingBall, 20);
+//Check for collision
+
+function collisionCheck() {
+  if (currentBallPossition[1] === 0) {
+    console.log("aaaaaaaa");
+    clearInterval(timerID);
+  }
+  if (
+    currentBallPossition[0] >= boardWidth - ballDiam ||
+    currentBallPossition[1] >= boardHight - ballDiam ||
+    currentBallPossition[0] <= 0
+  ) {
+    changeDirection();
+  }
+  if (currentBallPossition[1] === 0) {
+  }
+
+  // if (currentBallPossition[0] <= 0 + ballDiam) {
+  //   changeDirection();
+  // if (currentBallPossition[0] <= 0 + ballDiam) {
+  //   changeDirection();
+  //
+  // }
+}
+
+function changeDirection() {
+  if (xDirection === 2 && yDirection === 2) {
+    yDirection = -2;
     return;
   }
-  switch (event.key) {
-    case "ArrowRight":
+  if (xDirection === 2 && yDirection === -2) {
+    xDirection = -2;
+    return;
   }
-  userMovement(moveRate);
-});
+  if (xDirection === -2 && yDirection === -2) {
+    yDirection = 2;
+    return;
+  }
+  if (xDirection === -2 && yDirection === 2) {
+    xDirection = 2;
+    return;
+  }
+}
+// function changeDirection1() {
+//   if (xDirection === -2 && yDirection === 2) {
+//     yDirection = -2;
+//   }
+// }
