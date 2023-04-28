@@ -1,5 +1,5 @@
 "use strict";
-
+const score = document.querySelector(".scoreDispaly h1");
 const grid = document.querySelector(".grid");
 const blockWidth = 100;
 const bolckHeight = 20;
@@ -7,8 +7,8 @@ const ballDiam = 20;
 const boardWidth = 560;
 const boardHight = 300;
 const userStart = [230, 10];
-const ballStart = [100, 100];
-let xDirection = -2;
+const ballStart = [300, 100];
+let xDirection = 2;
 let yDirection = 2;
 let currentPossition = userStart;
 let currentBallPossition = ballStart;
@@ -118,13 +118,40 @@ function movingBall() {
   console.log(`y = ${currentBallPossition[1]}`);
   console.log(`x = ${currentBallPossition[0]}`);
 }
-timerID = setInterval(movingBall, 20);
+timerID = setInterval(movingBall, 30);
 //Check for collision
 
 function collisionCheck() {
+  // check for blocks collision
+  for (let i = 0; i < blocks.length; i++) {
+    if (
+      currentBallPossition[0] > blocks[i].bottomLeft[0] &&
+      currentBallPossition[0] < blocks[i].bottomRight[0] &&
+      currentBallPossition[1] + ballDiam > blocks[i].bottomLeft[1] &&
+      currentBallPossition[1] < blocks[i].topleft[1]
+    ) {
+      const allBlocks = Array.from(document.querySelectorAll(".block"));
+      allBlocks[i].classList.remove("block");
+      blocks.splice(i, 1);
+      changeDirectionBlock();
+      console.log(allBlocks);
+      // changeDirection();
+    }
+  }
+  //Check for user collision
+  if (
+    currentBallPossition[1] - ballDiam <= currentPossition[1] &&
+    currentBallPossition[0] >= currentPossition[0] &&
+    currentBallPossition[0] <= currentPossition[0] + blockWidth
+    // currentBallPossition[1] <= currentBallPossition[1]
+  ) {
+    changeDirection();
+    console.log("laaaagaaaa");
+  }
   if (currentBallPossition[1] === 0) {
     console.log("aaaaaaaa");
     clearInterval(timerID);
+    score.innerHTML = "You looose";
   }
   if (
     currentBallPossition[0] >= boardWidth - ballDiam ||
@@ -133,8 +160,9 @@ function collisionCheck() {
   ) {
     changeDirection();
   }
-  if (currentBallPossition[1] === 0) {
-  }
+  // if (currentBallPossition === currentPossition) {
+  //   changeDirection();
+  // }
 
   // if (currentBallPossition[0] <= 0 + ballDiam) {
   //   changeDirection();
@@ -159,6 +187,17 @@ function changeDirection() {
   }
   if (xDirection === -2 && yDirection === 2) {
     xDirection = 2;
+    return;
+  }
+}
+function changeDirectionBlock() {
+  if (xDirection === 2 && yDirection === 2) {
+    yDirection = -2;
+    return;
+  }
+
+  if (xDirection === -2 && yDirection === 2) {
+    yDirection = -2;
     return;
   }
 }

@@ -1,9 +1,5 @@
-.body {
-  margin-top: 500px;
-}
-
 .grid {
-  margin-top: 200px;
+  /* margin-top: 200px; */
   position: absolute;
   border: solid black 1px;
   width: 560px;
