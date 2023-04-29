@@ -8,6 +8,7 @@ const boardWidth = 560;
 const boardHight = 300;
 const userStart = [230, 10];
 const ballStart = [300, 100];
+// let allBlocks = [];
 let xDirection = 2;
 let yDirection = 2;
 let currentPossition = userStart;
@@ -112,11 +113,11 @@ function movingBall() {
   collisionCheck();
   drawBall();
 
-  console.log(xDirection);
-  console.log(yDirection);
+  // console.log(xDirection);
+  // console.log(yDirection);
 
-  console.log(`y = ${currentBallPossition[1]}`);
-  console.log(`x = ${currentBallPossition[0]}`);
+  // console.log(`y = ${currentBallPossition[1]}`);
+  // console.log(`x = ${currentBallPossition[0]}`);
 }
 timerID = setInterval(movingBall, 30);
 //Check for collision
@@ -132,12 +133,20 @@ function collisionCheck() {
     ) {
       const allBlocks = Array.from(document.querySelectorAll(".block"));
       allBlocks[i].classList.remove("block");
+      console.log(allBlocks.length);
       blocks.splice(i, 1);
       changeDirectionBlock();
-      console.log(allBlocks);
+      console.log(allBlocks.length);
+      if (allBlocks.length <= 0) {
+        console.log("wygrana");
+        clearInterval(timerID);
+        score.innerHTML = "You won";
+      }
+
       // changeDirection();
     }
   }
+
   //Check for user collision
   if (
     currentBallPossition[1] - ballDiam <= currentPossition[1] &&
